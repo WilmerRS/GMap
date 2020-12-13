@@ -9,10 +9,15 @@
  */
 package mapa_app.controller;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import mapa_app.model.Model;
+import java.util.ArrayList;
 import mapa_app.view.View;
+import mapa_app.model.Model;
+import mapa_app.model.Vertice;
 
 /**
  * Clase que permite controlar la interfaz, mediante el llamado de sus eventos
@@ -40,26 +45,31 @@ public class Controller {
     public void iniciarGrafo() {
         model.iniciarGrafo();
         view.iniciarGrafo(model.getGrafo());
+        
+        ArrayList<Vertice> ver =  model.getGrafo().caminoMasCorto("v251", "v187");
+        view.getPnAristas().setVer(ver);
+        view.getPnAristas().setPintarCamino(true);
+        view.getPnAristas().repaint();
     }
 
     public void agregarEventos() {
-        view.getBtnmas().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                model.setZoom(model.getZoom() + 0.3);
-                iniciarGrafo();
-                System.out.println("+");
-            }
-        });
-        view.getBtnmenos().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if (model.getZoom() != 1) {
-                    model.setZoom(model.getZoom() - 0.3);
-                    iniciarGrafo();
-                }
-            }
-        });
+//        view.getBtnmas().addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                model.setZoom(model.getZoom() + 0.3);
+//                iniciarGrafo();
+//                System.out.println("+");
+//            }
+//        });
+//        view.getBtnmenos().addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//                if (model.getZoom() != 1) {
+//                    model.setZoom(model.getZoom() - 0.3);
+//                    iniciarGrafo();
+//                }
+//            }
+//        });
     }
 
 }

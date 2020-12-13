@@ -1,137 +1,77 @@
-/**
- * GRAFOS APP
- * Aplicacion de escritorio realizada para crear y hacer groficamente un grafo no
- * dirigido. Permite evaluar las propiedades de un grafo tanto simple como multiple.
- *
- * WILMER RODRIGUEZ SANCHEZ
- * 2020 - 2
- */
 package mapa_app.model;
 
-import java.awt.Color;
-import java.awt.Point;
+
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.Objects;
+import java.util.Stack;
 
-/**
- *
- * @author WILMER
- */
 public class Vertice {
+    public String nombre;
+    public Point posicion;
+    public String padre;
+    public int barrio;
+    public double f;
+    public double g;
+    public double h;
+    public boolean frontera;
+    public ArrayList<Vertice> verticesAdyacentes;
+    public ArrayList<Arista> aristas;
 
-    private ArrayList<Arista> aristas;
-    private Hashtable<Integer, Integer> hashAristas;
-    private int grado = 0;
-    private String nombre;
-    private double x;
-    private double y;
-
-    private Point pos_nombre;
-
-    private Color color = new Color(0, 196, 255);
-
-    public Vertice(String nombre) {
-        aristas = new ArrayList<>();
-        hashAristas = new Hashtable<>();
+    public Vertice(String nombre, int x, int y, int barrio) {
         this.nombre = nombre;
-//        this.posicion = posicion;
-//        this.pos_nombre = pos_nombre;
+        this.posicion = new Point(x, y);
+        this.barrio = barrio;
+        this.frontera = false;
+        verticesAdyacentes = new ArrayList<Vertice>();
+        aristas = new ArrayList<Arista>();
     }
 
-//    public boolean isAristaEnVertice(char a, char b) {
-//        System.out.println(a + " -*- " + b);
-//        int ar = hashAristas.get(a + b);
-//
-//        hashAristas.replace(a + b, (hashAristas.get(a + b)+1));
-//        System.out.println(hashAristas.get(a + b));
-//        if (ar == 2) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-    public boolean agregarArista( double x1, double x2,double y1,double y2, int cantidad, String a, String b) {
-//        System.out.println("Agregando arista   " + a + " - - " + b);
-        Arista arista = new Arista(x1,x2,y1,y2, cantidad, a, b);
-//        hashAristas.put(a + b, 0);
-        aristas.add(arista);
-//        grado = obtenerGrado();
-        return true;
+    public double distancia(int x, int y) {
+        double dx = Math.pow(Math.abs(this.posicion.x - x), 2.0);
+        double dy = Math.pow(Math.abs(this.posicion.y - y), 2.0);
+        return Math.sqrt(dx + dy);
     }
 
-    public String obtenerCadenaVertice() {
-        String cadena = "";
-        for (int i = 0; i < aristas.size(); i++) {
-            cadena += aristas.get(i).getNombreArista() + ", ";
+    public void agregarVerticesAdyacentes(String nameB, int x2, int y2, int barrio) {
+        Vertice arista = new Vertice(nameB, x2, y2, barrio);
+        arista.g = distancia(x2, y2);
+        arista.padre = this.nombre;
+        if (!verticesAdyacentes.contains(arista)) {
+            verticesAdyacentes.add(arista);
         }
-        return cadena;
+        if(this.barrio != barrio){
+            this.frontera = true;
+        }
+        this.frontera = this.barrio != barrio;
+        Arista nueva = new Arista(this.nombre, nameB);
+        nueva.peso = distancia(x2,y2);
+        if (!aristas.contains(nueva)) {
+            aristas.add(nueva);
+        }
+    }
+    public ArrayList<String> obtenerVerticesAdyacentes(){
+        ArrayList<String> a = new ArrayList<String>();
+        for(Arista q: aristas){
+            a.add(q.name2);
+        }
+        return a;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vertice vertice = (Vertice) o;
+        return nombre.equals(vertice.nombre);
     }
 
-    public void colorDefecto() {
-        color = new Color(0, 196, 255);
-    }
-
-    public void colorResaltado() {
-        color = new Color(255, 174, 201);
-    }
-
-    public int getGrado() {
-        return grado;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-
-    public Point getPos_nombre() {
-        return pos_nombre;
-    }
-
-    public void setGrado(int grado) {
-        this.grado = grado;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    
-
-    public void setPos_nombre(Point pos_nombre) {
-        this.pos_nombre = pos_nombre;
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre);
     }
 
     public ArrayList<Arista> getAristas() {
         return aristas;
     }
-
-    public void setAristas(ArrayList<Arista> aristas) {
-        this.aristas = aristas;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
+    
 }

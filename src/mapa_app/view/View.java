@@ -10,11 +10,8 @@
 package mapa_app.view;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,6 +34,7 @@ public class View extends JFrame implements Patron {
 
     private JLayeredPane layeredPane;
     JScrollPane sp;
+    private PnLienzo pnAristas;
 
     public View() {
         initComponents();
@@ -58,19 +56,30 @@ public class View extends JFrame implements Patron {
         btnmenos = new JButton("Zoom-");
 
 //        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pn, pn2);
+
         layeredPane = new JLayeredPane();
         layeredPane.setBorder(BorderFactory.createTitledBorder("Capas"));
 
-        sp = new JScrollPane(layeredPane,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        sp.setViewportView(layeredPane);
-        sp.setOpaque(false);
-        sp.setBorder(null);
+//        sp = new JScrollPane(layeredPane,
+//                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+//                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//        sp.setViewportView(layeredPane);
+//        sp.setOpaque(false);
+//        sp.setBorder(null);
 
-        pn.add(sp);
-        pn.add(btnmas, BorderLayout.WEST);
-        pn.add(btnmenos, BorderLayout.EAST);
+        pn.add(layeredPane);
+//        pn.add(btnmas, BorderLayout.WEST);
+//        pn.add(btnmenos, BorderLayout.EAST);
+        
+//        RoundedPanel rm = new RoundedPanel(100,COLOR_ACENTUADOR, COLOR_CLICK_GRIS);
+//        rm.setPreferredSize(new Dimension(100,100));
+//        
+//        JButton bn = new JButton("Hola");
+//        bn.setPreferredSize(new Dimension(200,300));
+//        rm.add(bn);
+//        
+//        pn.add(rm, BorderLayout.SOUTH);
+        
 //        pn.add(layeredPane);
         getContentPane().add(pn, java.awt.BorderLayout.CENTER);
         this.pack();
@@ -79,17 +88,15 @@ public class View extends JFrame implements Patron {
     public void iniciarGrafo(Grafo g) {
         layeredPane.removeAll();
         layeredPane.updateUI();
-        PnLienzo pnVertices;
-        PnLienzo pnAristas;
         
-        System.out.println("-------------a-----------------\n-------------a-----------------");
+//        System.out.println("-------------a-----------------\n-------------a-----------------");
         pnAristas = new PnLienzo("ARISTAS", g);
         layeredPane.add(pnAristas, new Integer(0));
         layeredPane.updateUI();
 
-        pnVertices = new PnLienzo("VERTICES", g);
-        layeredPane.add(pnVertices, new Integer(1));
-        layeredPane.updateUI();
+//        pnVertices = new PnLienzo("VERTICES", g);
+//        layeredPane.add(pnVertices, new Integer(1));
+//        layeredPane.updateUI();
     }
 
     public JButton getBtnmas() {
@@ -106,6 +113,14 @@ public class View extends JFrame implements Patron {
 
     public void setBtnmenos(JButton btnmenos) {
         this.btnmenos = btnmenos;
+    }
+
+    public void setLayeredPane(JLayeredPane layeredPane) {
+        this.layeredPane = layeredPane;
+    }
+
+    public PnLienzo getPnAristas() {
+        return pnAristas;
     }
 
 }
